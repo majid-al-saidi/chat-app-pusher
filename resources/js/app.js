@@ -1,7 +1,16 @@
-import './bootstrap';
+import './bootstrap'; // Sets up Echo and axios
 
-import Alpine from 'alpinejs';
+import { listenForMessages } from './chat/listener';
+import { setupSendMessage } from './chat/send';
+console.log('Echo config test:', import.meta.env.VITE_PUSHER_APP_KEY);
 
-window.Alpine = Alpine;
+// Get the current user's ID from the meta tag
+const userIdMeta = document.head.querySelector('meta[name="user-id"]');
+const userId = userIdMeta ? userIdMeta.content : null;
 
-Alpine.start();
+if (userId) {
+    listenForMessages(userId);
+    setupSendMessage();
+} else {
+    console.warn('User ID meta tag not found.');
+}

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ChatUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,5 +18,16 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+//For chat functionality:
+Route::middleware('auth')->group(function () {
+    Route::post('/chat/send', [ChatController::class, 'sendMessage']);
+    // Route::get('/chat', function () { return view('chat.chat'); });
+    Route::get('/chat/{user}', [ChatController::class, 'show'])->name('chat.show');
+    Route::get('/chat/users', [ChatUserController::class, 'index'])->name('chat');
+});
+
+
 
 require __DIR__.'/auth.php';
