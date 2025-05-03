@@ -2,6 +2,6 @@
 
 use Illuminate\Support\Facades\Broadcast;
 
-Broadcast::channel('chat.{userId}', function ($user, $userId) {
-    return (int) $user->id === (int) $userId;
+Broadcast::channel('chat.{userA}.{userB}', function ($user, $userA, $userB) {
+    return $user->id == $userA || $user->id == $userB;
 });

@@ -25,14 +25,20 @@ class MessageSent implements ShouldBroadcastNow
         $this->message = $message;
         $this->fromUserId = $fromUserId;
         $this->toUserId = $toUserId;
-        $this->fromUserName = $fromUserName; 
+        $this->fromUserName = $fromUserName;
     }
 
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
-        return [
-            new PrivateChannel('chat.' . $this->toUserId),
-        ];
+        $channelName = $this->generateChatChannel($this->fromUserId, $this->toUserId);
+        return new PrivateChannel("chat.{$channelName}");
+    }
+
+    private function generateChatChannel($userA, $userB)
+    {
+        $ids = [$userA, $userB];
+        sort($ids); // Ensures consistency: chat.2.5 and chat.5.2 → chat.2.5
+        return implode('.', $ids);
     }
 
     public function broadcastWith(): array

@@ -2,15 +2,20 @@ import './bootstrap'; // Sets up Echo and axios
 
 import { listenForMessages } from './chat/listener';
 import { setupSendMessage } from './chat/send';
+
 console.log('Echo config test:', import.meta.env.VITE_PUSHER_APP_KEY);
 
-// Get the current user's ID from the meta tag
+// Get current user ID
 const userIdMeta = document.head.querySelector('meta[name="user-id"]');
-const userId = userIdMeta ? userIdMeta.content : null;
+const myId = userIdMeta ? userIdMeta.content : null;
 
-if (userId) {
-    listenForMessages(userId);
+// Get the other user's ID from the hidden input field
+const toUserIdInput = document.getElementById('to-user-id');
+const theirId = toUserIdInput ? toUserIdInput.value : null;
+
+if (myId && theirId) {
+    listenForMessages(myId, theirId);
     setupSendMessage();
 } else {
-    console.warn('User ID meta tag not found.');
+    console.warn('Missing user IDs — cannot initialize chat.');
 }

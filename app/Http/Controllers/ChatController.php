@@ -32,7 +32,7 @@ class ChatController extends Controller
         $fromUserId = auth()->id(); // assumes user is logged in
         $fromUserName = auth()->user()->name; // assumes user has a name attribute
 
-        broadcast(new MessageSent($message, $fromUserId, $toUserId, $fromUserName))->toOthers();
+        broadcast(new MessageSent($message, $fromUserId, $toUserId, $fromUserName));
 
         return response()->json(['status' => 'Message sent']);
     }

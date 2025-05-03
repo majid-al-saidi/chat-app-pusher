@@ -21,11 +21,22 @@ Route::middleware('auth')->group(function () {
 
 
 //For chat functionality:
+// Route::middleware('auth')->group(function () {
+//     Route::post('/chat/send', [ChatController::class, 'sendMessage']);
+//     // Route::get('/chat', function () { return view('chat.chat'); });
+//     Route::get('/chat/{user}', [ChatController::class, 'show'])->name('chat.show');
+//     Route::get('/chat/users', [ChatUserController::class, 'index'])->name('chat');
+// });
+
 Route::middleware('auth')->group(function () {
-    Route::post('/chat/send', [ChatController::class, 'sendMessage']);
-    // Route::get('/chat', function () { return view('chat.chat'); });
-    Route::get('/chat/{user}', [ChatController::class, 'show'])->name('chat.show');
+    // [1] Show all users you can chat with
     Route::get('/chat/users', [ChatUserController::class, 'index'])->name('chat');
+
+    // [2] Load chat interface with selected user
+    Route::get('/chat/{user}', [ChatController::class, 'show'])->name('chat.show');
+
+    // [3] Send message to selected user
+    Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
 });
 
 
